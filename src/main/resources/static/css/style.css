@@ -1,0 +1,91 @@
+body {
+    background-color: #ffefd5;
+    font-family: Copper, sans-serif;
+    margin: 40px;
+}
+
+h1 {
+    color: #4682b4;
+    text-align: center;
+    font-family: Copperplate, sans-serif;
+    border: solid;
+    text-decoration-style: wavy;
+}
+
+h2 {
+    color: #4682b4;
+    font-family: Times New Roman, monospace;
+}
+
+h3 {
+    color: #4682b4;
+        font-family: Times New Roman, monospace;
+}
+p {
+    color: #4682b4;
+    text-align: center;
+    font-size: 14px;
+
+}
+
+#eingabe {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Zentrieren  */
+    h1, .subtitle {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+
+  }
+
+    /* Liste Nichterledigt zentriert */
+    #Nichterledigt {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    }
+
+    #Erledigt {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+        margin 0 auto;
+
+    }
+
+       #Erledigt li {
+          color: gray;
+          text-decoration: line-through;
+          display: flex;
+
+          align-items: center;
+        }
+
+        /* Minus-Button */
+        .zurueck {
+          cursor: pointer;
+          color: red;
+          font-weight: bold;
+          margin-left: 10px;
+        }
+
+        /* Stil für offene Aufgaben */
+        #Nichterledigt li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+ /* Bild */
+img {
+    width: 160px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}

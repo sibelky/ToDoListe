@@ -3,22 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <title>To-Do Liste</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<h1>Willkommen zu Ihrer To-Do Liste!</h1>
-<div id="myDIV" class="header">
-    <h2>Meine To-Do Liste</h2>
-    <input type="text" id="myInput" placeholder="Nächstes To-Do">
-    <span onclick="newElement()" class="addBtn">Hinzufügen</span>
+<h1>Willkommen zu deiner To-Do Liste!</h1>
+<p class="subtitle">Hier kannst du deine To-Do's hinzufügen, als erledigt markieren und wieder zurückholen.</p>
+<div id="eingabe" class="header">
+    <img src = https://cdn-icons-png.flaticon.com/512/2387/2387635.png>
+    <input type="text" id="myInput" placeholder="Neue Aufgabe...">
+    <button id="addBtn" class="btn" type="button">Hinzufügen</button>
 </div>
 
-<ul id="myUL">
-    <li>Wocheneinkauf erledigen</li>
-    <li class="checked">Oma anrufen</li>
-    <li>Termin beim Zahnarzt vereinbaren</li>
-    <li>Zum Fitness gehen</li>
-    <li class="checked">Webtechnologien M1 erledigen</li>
-    <li>Zimmer streichen</li>
+<h2>Noch zu erledigen:</h2>
+<ul id="Nichterledigt">
+    <li>
+        <label>
+            <input type="checkbox">
+            <span>Wocheneinkauf erledigen</span>
+        </label>
+    </li>
+    <li>
+        <label>
+            <input type="checkbox">
+            <span>Oma anrufen</span>
+        </label>
+    </li>
+    <li>
+        <label>
+            <input type="checkbox">
+            <span>Termin beim Zahnarzt vereinbaren</span>
+        </label>
+    </li>
+    <li>
+        <label>
+            <input type="checkbox">
+            <span>Zum Fitness gehen</span>
+        </label>
+    </li>
+    <li>
+        <label>
+            <input type="checkbox">
+            <span>Webtechnologien M1 erledigen </span>
+        </label>
+    </li>
+    <li>
+        <label>
+            <input type="checkbox">
+            <span>Zimmer streichen</span>
+        </label>
+    </li>
 </ul>
+
+<h2>Erledigt:</h2>
+<ul id="Erledigt">
+
+</ul>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const offen = document.getElementById("Nichterledigt");
+      const fertig = document.getElementById("Erledigt");
+      const input = document.getElementById("myInput");
+      const addBtn = document.getElementById("addBtn");
+
+      // Speichern der aktuellen Listen
+      function speichereAufgaben() {
+        const daten = {
+          offen: offen.innerHTML,
+          fertig: fertig.innerHTML
+        };
+        localStorage.setItem("todoDaten", JSON.stringify(daten));
+      }
+
+      // Laden der gespeicherten Listen
+      function ladeAufgaben() {
+        const gespeicherteDaten = localStorage.getItem("todoDaten");
+        if (gespeicherteDaten) {
+          const daten = JSON.parse(gespeicherteDaten);
+          offen.innerHTML = daten.offen;
+          fertig.innerHTML = daten.fertig;
+
+          // Event Listener für Minus-Buttons nachladen
+          document.querySelectorAll(".zurueck").forEach(btn => {
+            btn.addEventListener("click", zurueck);
+          });
+
+          // Event Listener für neu geladene Checkboxen
+          offen.querySelectorAll("input[type='checkbox']").forEach(cb => {
+            cb.addEventListener("click", aufgabeErledigt);
+          });
+        }
+      }
+
+      //  "Zurück" (Minus-Symbol)
+      function zurueck(event) {
+        const li = event.target.closest("li");
+        li.removeChild(event.target);    // Minus-Button entfernen
+        const checkbox = li.querySelector("input[type='checkbox']");
+        checkbox.checked = false;
+        offen.appendChild(li);
+        speichereAufgaben();
+      }
+
+      // Aufgabe als erledigt markieren
+      function aufgabeErledigt(event) {
+        const li = event.target.closest("li");
+        if (!li || li.parentElement.id === "Erledigt") return;
+
+        fertig.appendChild(li);
+
+        // Minus-Zeichen hinzufügen
+        const btn = document.createElement("span");
+        btn.textContent = "−";
+        btn.classList.add("zurueck");
+        btn.addEventListener("click", zurueck);
+        li.appendChild(btn);
+
+        speichereAufgaben();
+      }
+
+      // Neue Aufgabe hinzufügen
+      function neueAufgabeHinzufuegen() {
+        const text = input.value.trim();
+        if (text === "") return;
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <label>
+            <input type="checkbox">
+            <span>${text}</span>
+          </label>
+        `;
+
+        // Checkbox Event Listener hinzufügen
+        li.querySelector("input[type='checkbox']").addEventListener("click", aufgabeErledigt);
+
+        offen.appendChild(li);
+        input.value = ""; // Input leeren
+        speichereAufgaben();
+      }
+
+      addBtn.addEventListener("click", neueAufgabeHinzufuegen);
+
+      // Enter-Taste im Inputfeld
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          neueAufgabeHinzufuegen();
+        }
+      });
+
+      // Gespeicherte Aufgaben laden
+      ladeAufgaben();
+    });
+</script>
 </body>
 </html>
