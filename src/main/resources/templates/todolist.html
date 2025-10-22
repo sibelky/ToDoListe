@@ -65,7 +65,7 @@
       const input = document.getElementById("myInput");
       const addBtn = document.getElementById("addBtn");
 
-      // Speichern der aktuellen Listen
+      // Speichern der aktuellen Listen in JSON im Browser-Speicher
       function speichereAufgaben() {
         const daten = {
           offen: offen.innerHTML,
@@ -74,7 +74,7 @@
         localStorage.setItem("todoDaten", JSON.stringify(daten));
       }
 
-      // Laden der gespeicherten Listen
+      // Lädt die gespeicherten Aufgaben aus dem localStorage zurück ins HTML
       function ladeAufgaben() {
         const gespeicherteDaten = localStorage.getItem("todoDaten");
         if (gespeicherteDaten) {
@@ -94,7 +94,7 @@
         }
       }
 
-      //  "Zurück" (Minus-Symbol)
+      //  "Zurück"- Funktion (Minus-Symbol)
       function zurueck(event) {
         const li = event.target.closest("li");
         li.removeChild(event.target);    // Minus-Button entfernen
@@ -104,14 +104,14 @@
         speichereAufgaben();
       }
 
-      // Aufgabe als erledigt markieren
+      // Aufgabe als erledigt markieren (Checkbox)
       function aufgabeErledigt(event) {
         const li = event.target.closest("li");
         if (!li || li.parentElement.id === "Erledigt") return;
 
         fertig.appendChild(li);
 
-        // Minus-Zeichen hinzufügen
+        // Minus-Zeichen hinzufügen, um Aufgaben zurückzuschieben
         const btn = document.createElement("span");
         btn.textContent = "−";
         btn.classList.add("zurueck");
@@ -126,6 +126,7 @@
         const text = input.value.trim();
         if (text === "") return;
 
+        // neues Listen-Element, fügt Checkbox + Text ein
         const li = document.createElement("li");
         li.innerHTML = `
           <label>
@@ -134,7 +135,7 @@
           </label>
         `;
 
-        // Checkbox Event Listener hinzufügen
+        // Checkbox Event Listener hinzufügen / Aufgabe wird in „Nichterledigt“ eingefügt, Eingabefeld geleert, alles gespeichert
         li.querySelector("input[type='checkbox']").addEventListener("click", aufgabeErledigt);
 
         offen.appendChild(li);
@@ -144,14 +145,14 @@
 
       addBtn.addEventListener("click", neueAufgabeHinzufuegen);
 
-      // Enter-Taste im Inputfeld
+      // Ermöglicht das Hinzufügen per Button oder Enter-Taste
       input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           neueAufgabeHinzufuegen();
         }
       });
 
-      // Gespeicherte Aufgaben laden
+      // Automatisches Laden beim Start
       ladeAufgaben();
     });
 </script>
